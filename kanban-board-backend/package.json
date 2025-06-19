@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A simple Node.js application",
   "main": "index.js",
+  "type": "module",
   "author": "Your Name",
   "license": "MIT",
   "engines": {
