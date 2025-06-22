@@ -4,3 +4,6 @@
 # Ignore all node_modules under frontend and backend
 /kanban-board-frontend/node_modules/
 /kanban-board-backend/node_modules/
+
+# Ignore all root directories
+/.env/
