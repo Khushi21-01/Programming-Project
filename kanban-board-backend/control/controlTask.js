@@ -1,62 +1,67 @@
-const task = require('../model/task');
+import TaskModel from '../Models/Tasks.js';
 
-const getTasks = async (req, res) => {
-  try {
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
-
-const getTaskById = async (req, res) => {
-};
-const createTask = async (req, res) => {
-    try{
-        const {
-            title,
-            description,
-            status,
-            priority,
-            dueDate,
-            progress
-        } = req.body;
-        res.status(201).json( {message: "Task created successfully", task: {}})
-    }
-    catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
-const updateTask = async (req, res) => {
-  try {
-    const updatedTask = await task.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true } 
-    );
-
-    if (!updatedTask) {
-      return res.status(404).json({ error: 'Task not found' });
+export default class TaskController {
+    // Get tasks by section
+    async getTasks(req, res) {
+        const { section } = req.params;
+        try {
+            const tasks = await TaskModel.getTasksBySection(section);
+            res.status(200).json(tasks);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
     }
 
-    res.status(200).json(updatedTask);
-  } catch (err) {
-    if (err.name === 'ValidationError') {
-      return res.status(400).json({ error: err.message });
-    }
-    res.status(500).json({ error: 'Server error' });
-  }
-};
+    // Add a new task
+    async addTask(req, res) {
+        // const { name, description, dueDate, assignee, section } = req.body;
+        try {
+            const task = await TaskModel.addTask(req.body);
 
-const deleteTask = async (req, res) => {
+            if (!task) {
+                return res.status(400).json({ message: "Failed to add task" });
+            }
 
-    try {
-    const deletedTask = await Task.findByIdAndDelete(req.params.id);
-
-    if (!deletedTask) {
-      return res.status(404).json({ error: 'Task not found' });
+            res.status(201).json({ message: "Task added successfully", task });
+        } catch (err) {
+            res.status(400).json({ message: err.message });
+        }
     }
 
-    res.status(200).json({ message: 'Task deleted successfully' });
-  } catch (err) {
-    res.status(500).json({ error: 'Server error' });
-  }
-};
+
+    // Update a task
+    async updateTask(req, res) {
+        const { taskId } = req.params;
+        const updatedTask = req.body;
+
+        try {
+            const task = await TaskModel.updateTask(taskId, updatedTask);
+            res.status(200).json({ message: "Task updated successfully", task });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    // Move task to another section
+    async moveTask(req, res) {
+        const { taskId, sourceSectionId, destinationSectionId } = req.body;
+        try {
+            const task = await TaskModel.moveTask(taskId, sourceSectionId, destinationSectionId);
+            res.status(200).json({ message: "Task moved successfully", task });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+
+    // Delete a task
+    async deleteTask(req, res) {
+        const { taskId } = req.params;
+
+        try {
+            await TaskModel.deleteTask(taskId);
+            res.status(200).json({ message: "Task deleted successfully" });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    }
+}
