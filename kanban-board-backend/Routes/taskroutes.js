@@ -1,12 +1,13 @@
-import{getTasks, createTask, getTaskById, updateTask, deleteTask, updateTaskStatus} from '..\control\controlTask.js';
-const express = require('express');
+import express from 'express';
+import TaskController from '../control/controlTask.js';
 
+const taskRoute = express.Router();
+const taskController = new TaskController();
 
-const router = express.Router();
+taskRoute.get('/:section', taskController.getTasks);
+taskRoute.post('/', taskController.addTask);
+taskRoute.put('/:taskId', taskController.updateTask);
+taskRoute.delete('/:taskId', taskController.deleteTask);
+taskRoute.patch('/move', taskController.moveTask);
 
-router.get('/', getTasks);
-router.post('/', createTask);
-router.get('/:id', getTaskById);
-router.put('/:id', updateTask);
-router.delete('/:id', deleteTask);
-router.put('/:id/status',  updateTaskStatus);
+export default taskRoute;
