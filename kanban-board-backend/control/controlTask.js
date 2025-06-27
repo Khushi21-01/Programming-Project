@@ -18,7 +18,7 @@ export default class TaskController {
 
     // Get tasks by section
     async getTasks(req, res) {
-        const { section } = req.params;
+        const section = req.params;
         try {
             const tasks = await TaskModel.getTasksBySection(section);
             res.status(200).json(tasks);
