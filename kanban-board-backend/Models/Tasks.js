@@ -1,40 +1,50 @@
-const taskSchema = {
+import mongoose from 'mongoose';
+import Section from '../Models/section.js'; 
+
+const taskSchema = new mongoose.Schema(  {
   title: { type: String, required: true },
-    description: { type: String},
+    description: { type: String, minlength: [3, 'description must be at least 3 characters']},
     status: { type: String, enum: ['todo', 'in-progress', 'done'], default: 'todo' },
     priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
     dueDate: { type: Date },
     progress: { type: Number, default: 0 },
-    section: { type: mongoose.Schema.Types.ObjectId, ref: 'Section', required: true }
-    };
-    const Task = mongoose.model('Task', taskSchema);
+    // section: { type: mongoose.Schema.Types.ObjectId, ref: 'Section', required: true }
+});
+
+const Task = mongoose.model('Task', taskSchema);
 
 export default class TaskModel {
-
-    static async addTask({ title, description, dueDate, progress, section }) {
+        // model for task reading by its id
+   static async getTaskById(id) {
         try {
-            const sectionDoc = await Section.findById(section);
-            if (!sectionDoc) {
-                throw new Error("Section does not exist");
-            }
-            const newTask = new Task({ title, description, dueDate, section: sectionDoc._id });
-
-            
-            sectionDoc.tasks.push(newTask._id);
-
-            await sectionDoc.save(); 
-
-            return await newTask.save();
+            const task = await Task.findById(id);
+            if (!task) throw new Error("Task not found");
+            return task;
         } catch (error) {
             throw new Error(error.message);
         }
     }
 
-    static async getTasksBySection(section) {
-        return await Task.find({ section });
+  static async getTasksBySection(section) {
+        return await Task.find({ section }); 
     }
 
-    static async updateTask(id, updatedTask) {
+   static async addTask(data) {
+
+        try {
+            const newTask = new Task(data);
+            
+            const re = await newTask.save();
+            console.log("Task added successfully:", re);
+            return re
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+
+
+
+ static async updateTask(id, updatedTask) {
         try {
             const task = await Task.findByIdAndUpdate(id, updatedTask, { new: true });
             if (!task) throw new Error("Task not found");
@@ -44,11 +54,11 @@ export default class TaskModel {
         }
     }
 
-    static async deleteTask(id) {
+     static async deleteTask(id) {
         return await Task.findByIdAndDelete(id);
     }
 
-    static async moveTask(taskId, sourceSectionId, destinationSectionId) {
+ static async moveTask(taskId, sourceSectionId, destinationSectionId) {
         try {
             
             const sourceSection = await Section.findById(sourceSectionId);
