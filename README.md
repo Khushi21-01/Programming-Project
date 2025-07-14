@@ -32,11 +32,17 @@ Drag and drop status update for tasks
 **database**: MongoDB 
 **Architecture** : API integration
 
+## API ENDPOINTS
+
+o	GET /api/tasks
+o	POST /api/
+
+
+
 # React App with Vite
 
 This is a React application bootstrapped with  [Vite](https://vitejs.dev/), a fast and modern frontend build tool.
 
-## Getting Started
 
 ### Prerequisites
 
