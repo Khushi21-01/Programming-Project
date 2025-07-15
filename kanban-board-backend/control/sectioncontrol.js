@@ -16,7 +16,7 @@ async addSection(req, res) {
 
             if(selectedSectionId){
                 const selectedSection = await Section.findById(selectedSectionId);
-                if(selectedSection){
+                if(selectedSection){ 
                     creationDate = new Date(new Date(selectedSection.createdAt).getTime() + 1000);
                 }
             }

@@ -8,7 +8,7 @@ const taskSchema = new mongoose.Schema(  {
     priority: { type: String, enum: ['low', 'medium', 'high'], default: 'medium' },
     dueDate: { type: Date },
     progress: { type: Number, default: 0 },
-    // section: { type: mongoose.Schema.Types.ObjectId, ref: 'Section', required: true }
+    //section: { type: mongoose.Schema.Types.ObjectId, ref: 'section', required: true }
 });
 
 const Task = mongoose.model('Task', taskSchema);

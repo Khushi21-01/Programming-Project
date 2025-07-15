@@ -1,6 +1,16 @@
 import TaskModel from '../Models/Tasks.js';
 
 export default class TaskController {
+    
+
+  getTasks = async (req, res) => {
+    try {
+      const sectionTasks = this.tasks.filter(t => t.section === req.params.sectionId);
+      res.json(sectionTasks);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  };
     // to get the tasks by its ID read operation
   async getTaskById(req, res) {
         const taskId  = req.params.taskId;
