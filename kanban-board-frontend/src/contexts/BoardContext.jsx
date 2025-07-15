@@ -1,13 +1,15 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { fetchBoard, updateBoard } from '../api/boardService';
-import { createTask, updateTask, deleteTask } from '../api/taskService';
+import React, { createContext, useState, useEffect } from "react";
+import { fetchBoard, updateBoard } from "../api/boardService";
+import { createTask, updateTask, deleteTask } from "../api/taskService";
 
 const BoardContext = createContext();
 
-export const BoardProvider = ({ children }) => {
+const BoardProvider = ({ children }) => {
   const [board, setBoard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  console.log("<= board", board);
 
   // Fetch initial board data
   useEffect(() => {
@@ -30,10 +32,18 @@ export const BoardProvider = ({ children }) => {
 
     const { destination, source } = result;
     if (!destination) return;
-    if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+    if (
+      destination.droppableId === source.droppableId &&
+      destination.index === source.index
+    )
+      return;
 
-    const startColIndex = board.columns.findIndex(col => col._id === source.droppableId);
-    const finishColIndex = board.columns.findIndex(col => col._id === destination.droppableId);
+    const startColIndex = board.columns.findIndex(
+      (col) => col._id === source.droppableId
+    );
+    const finishColIndex = board.columns.findIndex(
+      (col) => col._id === destination.droppableId
+    );
     const startCol = board.columns[startColIndex];
     const finishCol = board.columns[finishColIndex];
 
@@ -48,7 +58,7 @@ export const BoardProvider = ({ children }) => {
 
       try {
         const updatedBoard = { ...board, columns: newColumns };
-        await updateBoard(updatedBoard);
+        // await updateBoard(updatedBoard);
         setBoard(updatedBoard);
       } catch (err) {
         setError(err.message);
@@ -68,7 +78,7 @@ export const BoardProvider = ({ children }) => {
 
     try {
       const updatedBoard = { ...board, columns: newColumns };
-      await updateBoard(updatedBoard);
+      //   await updateBoard(updatedBoard);
       setBoard(updatedBoard);
     } catch (err) {
       setError(err.message);
@@ -79,15 +89,15 @@ export const BoardProvider = ({ children }) => {
   const addTask = async (columnId, taskData) => {
     try {
       const newTask = await createTask(columnId, taskData);
-      const updatedColumns = board.columns.map(column => {
+      const updatedColumns = board.columns.map((column) => {
         if (column._id === columnId) {
-          return { ...column, tasks: [...column.tasks, newTask] };
+          return { ...column, tasks: [...column.tasks, newTask?.newtask] };
         }
         return column;
       });
       const updatedBoard = { ...board, columns: updatedColumns };
       setBoard(updatedBoard);
-      await updateBoard(updatedBoard);
+      //   await updateBoard(updatedBoard);
     } catch (err) {
       setError(err.message);
     }
@@ -97,31 +107,31 @@ export const BoardProvider = ({ children }) => {
   const editTask = async (taskId, updatedData) => {
     try {
       const updatedTask = await updateTask(taskId, updatedData);
-      const updatedColumns = board.columns.map(column => ({
+      const updatedColumns = board.columns.map((column) => ({
         ...column,
-        tasks: column.tasks.map(task => 
+        tasks: column.tasks.map((task) =>
           task._id === taskId ? updatedTask : task
-        )
+        ),
       }));
       const updatedBoard = { ...board, columns: updatedColumns };
       setBoard(updatedBoard);
-      await updateBoard(updatedBoard);
+      //   await updateBoard(updatedBoard);
     } catch (err) {
       setError(err.message);
     }
   };
 
   // Delete task
-   const removeTask = async (taskId) => {
+  const removeTask = async (taskId) => {
     try {
       await deleteTask(taskId);
-      const updatedColumns = board.columns.map(column => ({
+      const updatedColumns = board.columns.map((column) => ({
         ...column,
-        tasks: column.tasks.filter(task => task._id !== taskId)
+        tasks: column.tasks.filter((task) => task._id !== taskId),
       }));
       const updatedBoard = { ...board, columns: updatedColumns };
       setBoard(updatedBoard);
-      await updateBoard(updatedBoard);
+      //   await updateBoard(updatedBoard);
     } catch (err) {
       setError(err.message);
     }
@@ -132,9 +142,11 @@ export const BoardProvider = ({ children }) => {
   if (!board) return <div>No board data</div>;
 
   return (
-    <BoardContext.Provider value={{ board, handleDragEnd, addTask, editTask, removeTask }}>
+    <BoardContext.Provider
+      value={{ board, handleDragEnd, addTask, editTask, removeTask }}
+    >
       {children}
     </BoardContext.Provider>
   );
 };
-export { BoardContext };
+export { BoardContext, BoardProvider };
