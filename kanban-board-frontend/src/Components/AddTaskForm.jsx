@@ -9,6 +9,18 @@ const AddTaskForm = React.memo(({ columnId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    // Validate title before adding
+    if(!taskData?.title.trim()) {
+      alert('Task title is required');  
+      return;
+    }
+
+    if(!taskData?.description.trim()) {
+      alert('Task description is required');  
+      return;
+    }
+
     if (taskData.title.trim()) {
       addTask(columnId, taskData);
       setTaskData({ title: '', description: '' });

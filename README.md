@@ -29,7 +29,7 @@ Edit task details (title, descriptio)
 3.update: update the task progress
 4.delete: delete the task if done
 
-## NON FUNCTIONAL REQUIREMENTS
+## Technical REQUIREMENTS
 **Frontend**: html, javascript, React
 **backend** : NodeJs , Express
 **database**: MongoDB 
@@ -37,9 +37,9 @@ Edit task details (title, descriptio)
 
 ## API ENDPOINTS
 
-GET /api/tasks
-POST /api/
-PUT /api/board
+1. GET /api/tasks
+2. POST /api/
+3. PUT /api/board
 
 
 

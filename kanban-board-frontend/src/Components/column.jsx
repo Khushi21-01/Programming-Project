@@ -14,7 +14,7 @@ const Column = React.memo(({ column }) => {
       display: 'flex',
       flexDirection: 'column',
       maxHeight: 'calc(100vh - 180px)',
-      overflowY: 'auto'
+      //overflowY: 'auto'
     }}>
       <Typography variant="h6" sx={{ mb: 2, position: 'sticky', top: 0, bgcolor: '#f5f5f5', zIndex: 1 }}>
         {column.title} ({column.tasks.length})
