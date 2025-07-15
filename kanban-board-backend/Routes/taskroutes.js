@@ -4,7 +4,7 @@ import TaskController from '../control/controlTask.js';
 const taskRoute = express.Router();
 const taskController = new TaskController();
 
-taskRoute.get('/:section', taskController.getTasks);
+taskRoute.get('/:sectionId', taskController.getTasks);
 taskRoute.post('/', taskController.addTask);
 taskRoute.put('/:taskId', taskController.updateTask);
 taskRoute.delete('/:taskId', taskController.deleteTask);

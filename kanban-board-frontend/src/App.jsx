@@ -1,22 +1,23 @@
-import { BrowserRouter, Route, Routes } from 'react-router'
-import './App.css'
+import React from "react";
+import { AppBar, Toolbar, Typography } from "@mui/material";
+import { BoardProvider } from "./contexts/BoardContext";
+import BoardPage from "./pages/BoardPage";
 
 function App() {
-  
   return (
-   <>
-  <BrowserRouter>
-    <Routes>
-      <Route path='/' element={<h1>KanBan board</h1>}></Route>
-    </Routes>
-  </BrowserRouter>
-  <div className='Header'>
-  <h1>Welcome to the Kanban Board</h1>
-  </div>
-
-
-   </>
-  )
+    <>
+      <BoardProvider>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              Kanban Board
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <BoardPage />
+      </BoardProvider>
+    </>
+  );
 }
 
-export default App
+export default App;
