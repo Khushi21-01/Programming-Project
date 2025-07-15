@@ -18,6 +18,9 @@
 ## Feature of the project:
 CRUD operations : create , read, update and delete the task
 Drag and drop status update for tasks
+Add tasks to different columns (To Do, In Progress, Done)
+Drag and drop tasks between columns
+Edit task details (title, descriptio)
 
 ## FUNCTIONAL RQUIREMENTS
 **CRUD OPERATIONS**:  
@@ -34,8 +37,9 @@ Drag and drop status update for tasks
 
 ## API ENDPOINTS
 
-o	GET /api/tasks
-o	POST /api/
+GET /api/tasks
+POST /api/
+PUT /api/board
 
 
 
@@ -49,4 +53,6 @@ This is a React application bootstrapped with  [Vite](https://vitejs.dev/), a fa
 -   Node.js (v20+  recommended)
     
 -   npm or yarn
+
+
     
